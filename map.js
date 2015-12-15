@@ -1,6 +1,8 @@
 // initialize the map
 var map = L.map('map', {maxZoom: 18}).setView([20, 0], 2);
 
+map.attributionControl.addAttribution('Data &copy; <a href="http://demap.com.au/" target="_blank">Demap</a>');
+
 // load GeoJSON polygon data from an external file
 $.getJSON("RNbasemap.geojson", function(basemap) {
     L.geoJson(basemap).addTo(map);
