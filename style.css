@@ -13,3 +13,12 @@
 .twitter {
     color: #7cc142;
 }
+
+.leaflet-popup-content-wrapper {
+    border-radius: 0;
+}
+
+.leaflet-popup-content {
+    margin: 5px;
+    margin-right: 24px;
+}
