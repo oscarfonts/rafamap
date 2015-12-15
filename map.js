@@ -6,35 +6,53 @@ $.getJSON("RNbasemap.geojson", function(basemap) {
     L.geoJson(basemap).addTo(map);
 });
 
-// load GeoJSON point data from an external file
-$.getJSON("twitterdata.geojson", function (data) {
-    // add GeoJSON layer to the map once the file is loaded
-    var mapIcon = L.icon({
-        iconUrl: 'map-marker.png',
+function getIcon(image, number) {
+    return new L.NumberedDivIcon({
+        iconUrl: image,
         shadowUrl: 'shadow50.png',
         iconSize: [27, 40],
         popupAnchor: [0, -15],
         shadowSize: [50, 64],
-        shadowAnchor: [12, 42]
+        shadowAnchor: [12, 42],
+        number: number
     });
+}
+
+function setImg(layer, image) {
+    layer._icon.getElementsByTagName("img")[0].setAttribute("src", image);
+}
+
+// load GeoJSON point data from an external file
+$.getJSON("twitterdata.geojson", function (data) {
+    // add GeoJSON layer to the map once the file is loaded
+    var markerIcon = getIcon('map-marker.png');
 
     var clustered = L.markerClusterGroup({
         iconCreateFunction: function(cluster) {
-            return new L.NumberedDivIcon({
-                iconUrl: 'map-cluster.png',
-                shadowUrl: 'shadow50.png',
-                iconSize: [27, 40],
-                popupAnchor: [0, -15],
-                shadowSize: [50, 64],
-                shadowAnchor: [12, 42],
-                number: cluster.getChildCount()
-            });
-        }
+            return getIcon('map-cluster.png', cluster.getChildCount());
+        },
+        showCoverageOnHover: false
+    });
+
+    clustered.on('clustermouseover', function(e) {
+        setImg(e.layer, 'map-cluster-hover.png');
+    });
+
+    clustered.on('clustermouseout', function(e) {
+        setImg(e.layer, 'map-cluster.png');
+    });
+
+    clustered.on('mouseover', function(e) {
+        setImg(e.layer, 'map-marker-hover.png');
+    });
+
+    clustered.on('mouseout', function(e) {
+        setImg(e.layer, 'map-marker.png');
     });
 
     L.geoJson(data, {
         pointToLayer: function (feature, latlng) {
-            var marker = L.marker(latlng, {icon: mapIcon});
+            var marker = L.marker(latlng, {icon: markerIcon});
             var html = '<div class="twitter"><img class="placeholder" src="http://placehold.it/14" width="14"/>' + feature.properties.Name + '</div>';
             html += '<div class="addr"><img class="placeholder" src="http://placehold.it/14" width="14"/>' + feature.properties.Match_addr + '</div>';
             marker.bindPopup(html);
@@ -44,5 +62,4 @@ $.getJSON("twitterdata.geojson", function (data) {
     });
 
     map.addLayer(clustered);
-
 });
