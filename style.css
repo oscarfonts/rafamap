@@ -5,3 +5,7 @@
 .leaflet-container {
     background: #004672;
 }
+
+.placeholder {
+    margin-right: 4px;
+}

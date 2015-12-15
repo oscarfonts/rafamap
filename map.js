@@ -21,7 +21,9 @@ $.getJSON("twitterdata.geojson", function (data) {
     L.geoJson(data, {
         pointToLayer: function (feature, latlng) {
             var marker = L.marker(latlng, {icon: mapIcon});
-            marker.bindPopup(feature.properties.Name + '<br/>' + feature.properties.Match_addr);
+            var html = '<div class="twitter"><img class="placeholder" src="http://placehold.it/14"/>' + feature.properties.Name + '</div>';
+            html += '<div class="addr"><img class="placeholder" src="http://placehold.it/14"/>' + feature.properties.Match_addr + '</div>';
+            marker.bindPopup(html);
             return marker;
         }
     }).addTo(map);
