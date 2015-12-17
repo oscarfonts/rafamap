@@ -1,12 +1,12 @@
 // initialize the map
 var map = L.map('map', {maxZoom: 18}).setView([20, 0], 2);
 
-map.attributionControl.addAttribution('Data &copy; <a href="http://demap.com.au/" target="_blank">Demap</a>');
-
 // load GeoJSON polygon data from an external file
 $.getJSON("RNbasemap.geojson", function(basemap) {
     L.geoJson(basemap).addTo(map);
 });
+
+map.attributionControl.addAttribution('Data &copy; <a href="http://demap.com.au/" target="_blank">Demap</a>');
 
 function getIcon(image, number) {
     return new L.NumberedDivIcon({
@@ -55,8 +55,8 @@ $.getJSON("twitterdata.geojson", function (data) {
     L.geoJson(data, {
         pointToLayer: function (feature, latlng) {
             var marker = L.marker(latlng, {icon: markerIcon});
-            var html = '<div class="twitter"><img class="placeholder" src="http://placehold.it/14" width="14"/>' + feature.properties.Name + '</div>';
-            html += '<div class="addr"><img class="placeholder" src="http://placehold.it/14" width="14"/>' + feature.properties.Match_addr + '</div>';
+            var html = '<div class="twitter"><img class="placeholder" src="popup-usericon.png" width="12" align="top" vspace="1"/>' + feature.properties.Name + '</div>';
+            html += '<div class="addr"><img class="placeholder" src="popup-mapicon.png" width="12" align="top" vspace="1"/>' + feature.properties.MapText + '</div>';
             marker.bindPopup(html);
             clustered.addLayer(marker);
             return marker;
@@ -65,3 +65,4 @@ $.getJSON("twitterdata.geojson", function (data) {
 
     map.addLayer(clustered);
 });
+
