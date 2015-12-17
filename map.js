@@ -1,5 +1,10 @@
 // initialize the map
-var map = L.map('map', {maxZoom: 18}).setView([20, 0], 2);
+var map = L.map('map', {
+    maxZoom: 18,
+    zoomControl: false
+}).setView([20, 0], 2);
+
+L.Control.zoomHome().addTo(map);
 
 // load GeoJSON polygon data from an external file
 $.getJSON("RNbasemap.geojson", function(basemap) {
