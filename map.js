@@ -6,10 +6,52 @@ var map = L.map('map', {
 
 L.Control.zoomHome().addTo(map);
 
+
+var cityMarkerStyle = {
+    radius: 4,
+    fillColor: "#fff",
+    color: "#000",
+    weight: 2,
+    opacity: 1,
+    fillOpacity: 0.7,
+    className: "citymarker"
+};
+
+var cityLabelOptions = {
+    noHide: true,
+    className: "citylabel"
+};
+
 // load GeoJSON polygon data from an external file
 $.getJSON("RNbasemap.geojson", function(basemap) {
     L.geoJson(basemap).addTo(map);
+    // Load GeoJSON point layer with city names
+    $.getJSON("cities.geojson", function(cities) {
+        L.geoJson(cities, {
+            pointToLayer: function(feature, latlng) {
+                return L.circleMarker(latlng, cityMarkerStyle).bindLabel(feature.properties.name, cityLabelOptions).addTo(map);
+            }
+        }).addTo(map);
+    });
 });
+
+// hide/show cities depending on zoom level
+map.on('zoomend', function() {
+    // Zoom range for city markers (circles)
+    if (map.getZoom() >= 3) {
+        $(".citymarker").show();
+    } else {
+        $(".citymarker").hide();
+    }
+
+    // Zoom range for city labels (text)
+    if (map.getZoom() >= 5) {
+        $(".citylabel").show();
+    } else {
+        $(".citylabel").hide();
+    }
+});
+
 
 map.attributionControl.addAttribution('Data &copy; <a href="http://demap.com.au/" target="_blank">Demap</a>');
 

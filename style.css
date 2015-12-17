@@ -50,3 +50,22 @@
 .leaflet-control-zoomhome a {
     font: bold 18px "Lucida Console",Monaco,monospace;
 }
+
+.citymarker {
+    display: none; /* at initial zoomLevel=2 is hidden */
+}
+
+.citylabel {
+    font-family: 'Quantico', sans-serif;
+    font-size: 14px;
+    background: transparent;
+    padding: 0;
+    border: 0;
+    left: -5px;
+    top: 5px;
+    display: none; /* at initial zoomLevel=2 is hidden */
+}
+
+.citylabel::before {
+    content: none;
+}
