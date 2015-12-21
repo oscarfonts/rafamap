@@ -19,7 +19,8 @@ var cityMarkerStyle = {
 
 var cityLabelOptions = {
     noHide: true,
-    className: "citylabel"
+    className: "citylabel",
+    pane: "shadowPane"
 };
 
 // load GeoJSON polygon data from an external file
